@@ -13,7 +13,20 @@ export function FeaturedFleetSection() {
   const rankedVehicles = (premiumVehicles.length ? premiumVehicles : vehicles)
     .slice()
     .sort((a, b) => b.pricePerDay - a.pricePerDay || b.year - a.year);
-  const displayVehicles = rankedVehicles.slice(0, 5).map((vehicle, index) => ({
+  const showcaseVehicles = rankedVehicles.slice(0, 5);
+  const rangeRover = rankedVehicles.find(
+    (vehicle) => vehicle.slug === "range-rover-p400-westminister-2022"
+  );
+
+  if (rangeRover && !showcaseVehicles.some((vehicle) => vehicle.slug === rangeRover.slug)) {
+    const swapIndex = showcaseVehicles.findIndex(
+      (vehicle) => vehicle.slug === "rolls-royce-cullinan-2024"
+    );
+    const targetIndex = swapIndex === -1 ? showcaseVehicles.length - 1 : swapIndex;
+    showcaseVehicles[targetIndex] = rangeRover;
+  }
+
+  const displayVehicles = showcaseVehicles.map((vehicle, index) => ({
     ...vehicle,
     featured: index === 0,
   }));
