@@ -82,3 +82,10 @@
 - checks: availability=pass, correctness=pass, stability=unknown, reliability=pass
 - notes: none
 
+## 2026-01-22 12:20
+- type: image
+- source: https://mediapool.bmwgroup.com/download/edown/pressclub/publicq?actEvent=image&attachment=1&dokNo=P90618126
+- final: public\temp\rr-cullinan-test.jpg
+- checks: availability=pass, correctness=pass, stability=unknown, reliability=pass
+- notes: none
+

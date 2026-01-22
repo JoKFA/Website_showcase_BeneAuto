@@ -21,8 +21,11 @@ export function FleetGrid({
   motionPreset = "inView",
 }: FleetGridProps) {
   const shouldReduceMotion = useReducedMotion();
+  const vehiclesWithImages = vehicles.filter(
+    (vehicle) => vehicle.images?.primary?.trim()
+  );
   const featuredId = highlightFeatured
-    ? vehicles.find((vehicle) => vehicle.featured)?.id
+    ? vehiclesWithImages.find((vehicle) => vehicle.featured)?.id
     : undefined;
 
   const enableInViewMotion = !shouldReduceMotion && motionPreset === "inView";
@@ -40,7 +43,7 @@ export function FleetGrid({
       {...motionProps}
       className={cn("grid gap-6 md:grid-cols-2 lg:grid-cols-3", className)}
     >
-      {vehicles.map((vehicle) => (
+      {vehiclesWithImages.map((vehicle) => (
         <VehicleCard
           key={vehicle.id}
           vehicle={vehicle}
