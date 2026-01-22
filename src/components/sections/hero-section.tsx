@@ -1,14 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { Badge, Button } from "@/components/ui";
 import { BookingWidget } from "@/components/domain/booking";
-import { vehicles } from "@/lib/data/vehicles";
 import { fadeUp, fadeUpBlur, slideInRight } from "@/lib/motion";
-import { SITE_CONFIG } from "@/lib/constants";
-import { formatCurrency } from "@/lib/utils";
+import { BUSINESS_HOURS, CONTACT_INFO, SITE_CONFIG } from "@/lib/constants";
 
 const popularSearches = [
   { label: "Economy cars", href: "/fleet?category=economy" },
@@ -19,9 +16,7 @@ const popularSearches = [
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion();
   const scrollBehavior = shouldReduceMotion ? "auto" : "smooth";
-  const featuredVehicle = vehicles.find((vehicle) => vehicle.featured) ?? vehicles[0];
-  const secondaryVehicle =
-    vehicles.find((vehicle) => vehicle.id !== featuredVehicle?.id) ?? vehicles[1];
+  const hoursSummary = BUSINESS_HOURS.map((item) => item.hours).join(" · ");
 
   const handleScroll = (id: string) => {
     const element = document.getElementById(id);
@@ -42,26 +37,10 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(212,168,83,0.2),_transparent_55%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(120deg,_rgba(255,255,255,0.06),_transparent_40%)]" />
-      {featuredVehicle && (
-        <div className="absolute right-[-10%] top-0 hidden h-full w-[55%] lg:block">
-          <div className="relative h-full w-full opacity-30">
-            <Image
-              src={featuredVehicle.images.primary}
-              alt={`${featuredVehicle.make} ${featuredVehicle.model}`}
-              fill
-              sizes="55vw"
-              className="object-cover"
-              priority
-              style={{ objectPosition: featuredVehicle.imageFocus ?? "50% 50%" }}
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-l from-primary-900/10 via-primary-900/40 to-primary-900" />
-        </div>
-      )}
 
       <div className="relative z-10">
-        <div className="container mx-auto px-4 pt-16 pb-12 lg:pb-20">
-          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div className="container mx-auto px-4 pt-16 pb-12 lg:pb-16">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="max-w-2xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Badge variant="secondary">Toronto car rentals</Badge>
@@ -80,7 +59,7 @@ export function HeroSection() {
                     })}
                 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
-                Book the right car in minutes. The local marketplace for Toronto rentals.
+                Book the right car in minutes. Built for Toronto trips.
               </motion.h1>
 
               <motion.p
@@ -91,7 +70,7 @@ export function HeroSection() {
                 and lock in pickup on Yonge Street.
               </motion.p>
 
-              <motion.div {...textMotionProps} className="mt-7 flex flex-wrap gap-3">
+              <motion.div {...textMotionProps} className="mt-6 flex flex-wrap gap-3">
                 {popularSearches.map((item) => (
                   <Link
                     key={item.href}
@@ -133,46 +112,41 @@ export function HeroSection() {
                     initial: "hidden",
                     animate: "visible",
                   })}
-              className="relative"
+              className="space-y-4"
             >
-              <div id="booking-widget">
-                <BookingWidget />
-              </div>
-
-              <div className="mt-6 hidden gap-4 lg:grid lg:grid-cols-2">
-                {[featuredVehicle, secondaryVehicle].filter(Boolean).map((vehicle) => (
-                  <div
-                    key={vehicle?.id}
-                    className="group overflow-hidden rounded-2xl border border-white/15 bg-white/10 shadow-lg"
-                  >
-                    <div className="relative aspect-[4/3]">
-                      {vehicle && (
-                        <Image
-                          src={vehicle.images.primary}
-                          alt={`${vehicle.make} ${vehicle.model}`}
-                          fill
-                          sizes="220px"
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                          style={{ objectPosition: vehicle.imageFocus ?? "50% 50%" }}
-                        />
-                      )}
-                    </div>
-                    <div className="bg-white/90 px-4 py-3 text-primary-900">
-                      <p className="text-xs text-neutral-500">From</p>
-                      <p className="text-sm font-semibold">
-                        {vehicle ? `${vehicle.make} ${vehicle.model}` : "Vehicle"}
-                      </p>
-                      {vehicle && (
-                        <p className="text-xs text-neutral-500">
-                          {formatCurrency(vehicle.pricePerDay)}/day
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
+                <p className="text-xs uppercase tracking-[0.2em] text-white/70">
+                  Pickup location
+                </p>
+                <p className="mt-2 text-lg font-semibold">{CONTACT_INFO.address}</p>
+                <p className="mt-2 text-sm text-white/70">
+                  {hoursSummary}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3 text-sm text-white/80">
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1">
+                    Winter tires included
+                  </span>
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1">
+                    No hidden fees
+                  </span>
+                </div>
+                <a
+                  href={`tel:${CONTACT_INFO.phone}`}
+                  className="mt-4 inline-flex text-sm font-semibold text-secondary-300 hover:text-secondary-200"
+                >
+                  Call {CONTACT_INFO.phone}
+                </a>
               </div>
             </motion.div>
           </div>
+
+          <motion.div
+            {...textMotionProps}
+            className="mt-10"
+            id="booking-widget"
+          >
+            <BookingWidget />
+          </motion.div>
         </div>
       </div>
     </section>
