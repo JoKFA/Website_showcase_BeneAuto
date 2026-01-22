@@ -11,26 +11,29 @@ interface FleetGridProps {
   vehicles?: Car[];
   className?: string;
   highlightFeatured?: boolean;
+  motionPreset?: "inView" | "static";
 }
 
 export function FleetGrid({
   vehicles = allVehicles,
   className,
   highlightFeatured = true,
+  motionPreset = "inView",
 }: FleetGridProps) {
   const shouldReduceMotion = useReducedMotion();
   const featuredId = highlightFeatured
     ? vehicles.find((vehicle) => vehicle.featured)?.id
     : undefined;
 
-  const motionProps = shouldReduceMotion
-    ? {}
-    : {
+  const enableInViewMotion = !shouldReduceMotion && motionPreset === "inView";
+  const motionProps = enableInViewMotion
+    ? {
         variants: staggerContainer,
         initial: "hidden",
         whileInView: "visible",
         viewport: { once: true, amount: 0.2 },
-      };
+      }
+    : { initial: false };
 
   return (
     <motion.div

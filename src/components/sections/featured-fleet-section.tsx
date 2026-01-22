@@ -9,7 +9,14 @@ import { fadeUp } from "@/lib/motion";
 
 export function FeaturedFleetSection() {
   const shouldReduceMotion = useReducedMotion();
-  const displayVehicles = vehicles.slice(0, 6);
+  const premiumVehicles = vehicles.filter((vehicle) => vehicle.category === "premium");
+  const rankedVehicles = (premiumVehicles.length ? premiumVehicles : vehicles)
+    .slice()
+    .sort((a, b) => b.pricePerDay - a.pricePerDay || b.year - a.year);
+  const displayVehicles = rankedVehicles.slice(0, 5).map((vehicle, index) => ({
+    ...vehicle,
+    featured: index === 0,
+  }));
   const scrollBehavior = shouldReduceMotion ? "auto" : "smooth";
 
   const headingMotionProps = shouldReduceMotion
@@ -28,11 +35,11 @@ export function FeaturedFleetSection() {
           <div className="max-w-2xl">
             <Badge variant="secondary">Our Fleet</Badge>
             <h2 className="mt-4 text-3xl font-semibold text-primary-900 sm:text-4xl">
-              Choose the right vehicle for every Toronto journey.
+              Modern luxury vehicles ready for Toronto.
             </h2>
             <p className="mt-4 text-base text-neutral-600 sm:text-lg">
-              From efficient city cars to premium sedans and spacious SUVs, our
-              fleet is curated for comfort, safety, and value.
+              The latest luxury sedans and SUVs for business travel, special
+              occasions, or premium weekend escapes.
             </p>
           </div>
           <Button

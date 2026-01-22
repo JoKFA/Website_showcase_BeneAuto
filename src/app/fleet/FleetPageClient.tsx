@@ -82,7 +82,7 @@ export function FleetPageClient() {
     setMinPrice(normalizePrice(searchParams.get("minPrice")));
     setMaxPrice(normalizePrice(searchParams.get("maxPrice")));
     setSortBy(normalizeSort(searchParams.get("sort")));
-  }, [paramsSignature, searchParams]);
+  }, [paramsSignature]);
 
   const filteredVehicles = useMemo(() => {
     let result = vehicles.filter((vehicle) => {
@@ -178,7 +178,11 @@ export function FleetPageClient() {
 
           <div className="mt-12">
             {filteredVehicles.length ? (
-              <FleetGrid vehicles={filteredVehicles} highlightFeatured={false} />
+              <FleetGrid
+                vehicles={filteredVehicles}
+                highlightFeatured={false}
+                motionPreset="static"
+              />
             ) : (
               <Card className="flex flex-col items-start gap-4 border-neutral-200 bg-neutral-50">
                 <h2 className="text-xl font-semibold text-primary-900">

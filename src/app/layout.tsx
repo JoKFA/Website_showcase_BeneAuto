@@ -16,7 +16,10 @@ const dmSans = DM_Sans({
   weight: ["500", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://beneauto.ca";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Bene Auto Rentals | Drive Toronto. Your Way.",
   description:
     "Quality car rentals in Toronto with transparent pricing and winter-ready fleet. Economy to premium vehicles available for daily, weekly, and monthly rentals.",
