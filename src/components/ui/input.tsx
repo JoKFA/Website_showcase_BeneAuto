@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
 
     return (
-      <div className="w-full">
+      <div className="w-full min-w-0">
         {label && (
           <label
             htmlFor={inputId}
@@ -35,7 +35,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             type={type}
             className={cn(
-              "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3",
+              "w-full min-w-0 max-w-full rounded-xl border border-neutral-200 bg-white px-4 py-3",
               "text-neutral-900 placeholder:text-neutral-400",
               "transition-colors duration-200",
               "focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20",
